@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { serverUrl } from '../main'
 import axios from "axios"
+import { setUserData } from '../redux/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
 function Signup() {
     let navigate = useNavigate()
     let [show,setShow] = useState(false)
@@ -10,6 +12,8 @@ function Signup() {
     let [password,setPassword] = useState("")
     let [loading,setLoading] = useState(false)
     let [err,setErr]= useState("")
+    let dispatch = useDispatch()
+   
 
      const handleSignup = async(e)=>{
         e.preventDefault()
@@ -17,7 +21,8 @@ function Signup() {
   try{
     let result = await axios.post(`${serverUrl}/api/auth/signup`,{
         userName,email,password },{withCredentials:true})
-        console.log(result); 
+        dispatch(setUserData(result.data))
+        navigate("/profile")
         setEmail("")
         setPassword("")     
         setLoading(false)
@@ -38,7 +43,7 @@ function Signup() {
             </div>
 
             <form className='w-full flex flex-col gap-[20px] items-center' onSubmit={handleSignup}>
-            <input type="text" placeholder='Username' className='w-[90%] h-[50px] outline-none border-2 border-[#20c7ff] px-[20px] py-[10px] bg-white rounded-lg shadow-gray-400 shadow-lg' onChange={(e)=>setUserName(e.target.value)} value={userName}/>
+            <input type="text" placeholder='Username' className='w-[90%] h-[50px] outline-none border-2 border-[#20c7ff] px-[20px] py-[10px] bg-white rounded-lg shadow-gray-400 shadow-lg text-[19px]' onChange={(e)=>setUserName(e.target.value)} value={userName}/>
             <input type="email" placeholder='Email' className='w-[90%] h-[50px] outline-none border-2 border-[#20c7ff] px-[20px] py-[10px] bg-white rounded-lg shadow-gray-400 shadow-lg'onChange={(e)=>setEmail(e.target.value)} value={email} />
             <div className='w-[90%] h-[50px] border-2 border-[#20c7ff] overflow-hidden rounded-lg shadow-gray-400 shadow-lg relative'>
                 <input type={`${show?"text":"password"}`} placeholder='Password' className='w-full h-full outline-none  px-[20px] py-[10px] bg-white ' onChange={(e)=>setPassword(e.target.value)} value={password}/>
