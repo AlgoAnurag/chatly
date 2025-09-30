@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Profile from './pages/Profile'
 import Home from './pages/Home'
 import getCurrentUser from './customHooks/getCurrentUser'
-import getOtherUsers from './customHooks/getOtherusers'
+import getOtherUsers from './customHooks/getOtherUsers'
 import { io } from "socket.io-client"
 import { serverUrl } from './main'
 import { setOnlineUsers, setSocket } from './redux/userSlice'
